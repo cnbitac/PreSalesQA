@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>预测性维护售前助手</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PdM Sales Copilot</p>
+          <h1>预测性维护售前助手</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="adminToggle" type="button">知识运营</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="query-panel" aria-label="售前查询">
+          <div class="search-card">
+            <label for="queryInput">客户问了什么</label>
+            <div class="search-row">
+              <input id="queryInput" type="search" autocomplete="off" placeholder="例如：多少钱、怎么装、准不准、能不能对接 MES">
+              <button id="clearQuery" type="button" aria-label="清空搜索">清空</button>
+            </div>
+          </div>
+
+          <div class="facet-grid">
+            <div class="facet-block">
+              <div class="facet-title">客户是谁</div>
+              <div class="chip-row" id="roleChips"></div>
+            </div>
+            <div class="facet-block">
+              <div class="facet-title">客户卡在哪</div>
+              <div class="chip-row" id="objectionChips"></div>
+            </div>
+            <div class="facet-block">
+              <div class="facet-title">设备怎么切入</div>
+              <div class="chip-row" id="deviceChips"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <aside class="side-panel" aria-label="客户场景">
+            <div class="panel-heading">
+              <h2>客户场景</h2>
+              <button class="text-button" id="resetContext" type="button">重置</button>
+            </div>
+
+            <div class="form-stack">
+              <label>
+                行业场景
+                <select id="industrySelect"></select>
+              </label>
+              <label>
+                客户角色
+                <select id="roleSelect"></select>
+              </label>
+              <label>
+                设备类型
+                <select id="deviceSelect"></select>
+              </label>
+              <label>
+                异议类型
+                <select id="objectionSelect"></select>
+              </label>
+              <fieldset>
+                <legend>客户已有系统</legend>
+                <div class="check-grid" id="systemChecks"></div>
+              </fieldset>
+            </div>
+
+            <div class="guardrail-card" id="guardrailCard" hidden></div>
+          </aside>
+
+          <section class="results-panel" aria-label="问答搜索结果">
+            <div class="panel-heading">
+              <h2>匹配问答</h2>
+              <span id="resultCount" class="count-pill">0</span>
+            </div>
+            <div id="resultsList" class="results-list"></div>
+          </section>
+
+          <section class="answer-panel" aria-label="销售话术">
+            <div id="emptyAnswer" class="empty-state">
+              <h2>选择一个客户问题</h2>
+              <p>系统会基于已审核知识生成一句话回答、展开话术、建议追问和可转发摘要。</p>
+            </div>
+
+            <article id="answerCard" class="answer-card" hidden>
+              <div class="answer-header">
+                <div>
+                  <span id="answerCategory" class="category-badge"></span>
+                  <h2 id="answerQuestion"></h2>
+                </div>
+                <button class="primary-button" id="copyAll" type="button">复制整段</button>
+              </div>
+
+              <div id="sensitiveNotice" class="sensitive-notice" hidden></div>
+
+              <div class="answer-section">
+                <div class="section-label">一句话回答</div>
+                <p id="oneLine"></p>
+                <button class="mini-button" data-copy-target="oneLine" type="button">复制</button>
+              </div>
+
+              <div class="answer-section">
+                <div class="section-label">展开话术</div>
+                <p id="talkTrack"></p>
+                <button class="mini-button" data-copy-target="talkTrack" type="button">复制</button>
+              </div>
+
+              <div class="answer-section">
+                <div class="section-label">建议追问</div>
+                <ul id="followUps"></ul>
+                <button class="mini-button" data-copy-target="followUps" type="button">复制</button>
+              </div>
+
+              <div class="answer-section">
+                <div class="section-label">可转发摘要</div>
+                <p id="shareSummary"></p>
+                <button class="mini-button" data-copy-target="shareSummary" type="button">复制</button>
+              </div>
+
+              <footer class="source-row">
+                <span id="sourceMeta"></span>
+                <div class="rating-row">
+                  <button class="text-button" id="rateGood" type="button">有用</button>
+                  <button class="text-button" id="rateBad" type="button">需优化</button>
+                </div>
+              </footer>
+            </article>
+          </section>
+        </section>
+
+        <section class="feedback-panel" aria-label="问题反馈">
+          <div class="panel-heading">
+            <h2>补充现场问题</h2>
+            <span class="status-pill">待售前审核</span>
+          </div>
+          <form id="feedbackForm" class="feedback-grid">
+            <label>
+              客户原问题
+              <textarea id="feedbackQuestion" rows="3" placeholder="记录客户的真实问法"></textarea>
+            </label>
+            <label>
+              客户原话/上下文
+              <textarea id="feedbackWords" rows="3" placeholder="例如：对方担心停机安装、预算、数据安全"></textarea>
+            </label>
+            <label>
+              竞品说法
+              <textarea id="feedbackCompetitor" rows="3" placeholder="可选"></textarea>
+            </label>
+            <label>
+              现场反馈
+              <textarea id="feedbackNotes" rows="3" placeholder="客户行业、设备、下一步动作"></textarea>
+            </label>
+            <button class="primary-button" type="submit">提交到待审核池</button>
+            <p id="feedbackToast" class="toast" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section id="adminPanel" class="admin-panel" aria-label="知识运营后台" hidden>
+          <div class="panel-heading">
+            <h2>知识运营</h2>
+            <button class="text-button" id="closeAdmin" type="button">收起</button>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span>已审核知识</span>
+              <strong id="metricKnowledge">0</strong>
+            </div>
+            <div class="metric-card">
+              <span>待审核问题</span>
+              <strong id="metricPending">0</strong>
+            </div>
+            <div class="metric-card">
+              <span>无答案记录</span>
+              <strong id="metricNoAnswer">0</strong>
+            </div>
+            <div class="metric-card">
+              <span>低满意回答</span>
+              <strong id="metricLowRating">0</strong>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <div class="admin-box">
+              <h3>文档上传与解析</h3>
+              <input id="importFile" type="file" accept=".txt,.md,.docx">
+              <div id="importStatus" class="admin-list"></div>
+            </div>
+            <div class="admin-box">
+              <h3>待审核池</h3>
+              <div id="reviewQueue" class="admin-list"></div>
+            </div>
+            <div class="admin-box">
+              <h3>知识草稿</h3>
+              <div id="draftList" class="admin-list"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
