@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  sales-assistant:
+    image: crpi-n68v5vsgyo3vr4da.cn-hangzhou.personal.cr.aliyuncs.com/linkedti/sales-assistant:v1
+    container_name: sales-assistant
+    ports:
+      - "8080:80"
+    restart: always
+    # build: .
