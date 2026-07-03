@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>IoT 数字化销售平台</title>
+    <title>预测性维护售前助手</title>
 
     <style>
         * {
@@ -25,7 +25,6 @@
             grid-template-columns: 1.2fr 1fr;
         }
 
-        /* 左侧 */
         .left {
             padding: 64px;
             display: flex;
@@ -45,7 +44,6 @@
             font-size: 42px;
             font-weight: 700;
             line-height: 1.1;
-            letter-spacing: -1px;
             margin-bottom: 16px;
         }
 
@@ -76,10 +74,8 @@
             height: 6px;
             border-radius: 50%;
             background: #111;
-            flex-shrink: 0;
         }
 
-        /* 右侧 */
         .right {
             display: flex;
             align-items: center;
@@ -91,12 +87,11 @@
 
         .card {
             width: 100%;
-            max-width: 360px;
-            border: 1px solid #ececec;
+            max-width: 380px;
+            padding: 32px;
             border-radius: 14px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             background: #fff;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
         }
 
         .card h2 {
@@ -110,52 +105,76 @@
             margin-bottom: 18px;
         }
 
-        .field {
-            margin-bottom: 12px;
+        .form-item {
+            margin-bottom: 14px;
         }
 
-        .field input {
+        .label {
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .input {
             width: 100%;
-            height: 44px;
+            height: 42px;
             border: 1px solid #e5e7eb;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 0 12px;
             outline: none;
-            font-size: 14px;
             transition: 0.2s;
+            font-size: 14px;
         }
 
-        .field input:focus {
-            border-color: #111;
-            box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+        .input:focus {
+            border-color: #1677ff;
+            box-shadow: 0 0 0 3px rgba(22,119,255,0.15);
+        }
+
+        .error {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 6px;
+            min-height: 14px;
         }
 
         .btn {
             width: 100%;
-            height: 44px;
+            height: 42px;
             border: none;
-            border-radius: 10px;
-            background: #111;
-            color: #fff;
+            border-radius: 8px;
+            background: #1677ff;
+            color: white;
             font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .btn:hover {
-            transform: translateY(-1px);
-            background: #000;
+            background: #0f5fd6;
         }
 
-        .hint {
-            margin-top: 14px;
-            font-size: 12px;
-            color: #9ca3af;
-            text-align: center;
+        .btn:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
         }
 
-        /* ===== 移动端优化（重点重写）===== */
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 900px) {
             .wrapper {
                 grid-template-columns: 1fr;
@@ -163,7 +182,6 @@
 
             .left {
                 padding: 36px 22px 20px;
-                text-align: left;
             }
 
             .title {
@@ -172,13 +190,12 @@
 
             .right {
                 border-left: none;
-                padding: 24px 18px 40px;
                 background: #f6f7f9;
+                padding: 24px 18px 40px;
             }
 
             .card {
                 max-width: 100%;
-                border-radius: 16px;
             }
         }
     </style>
@@ -187,8 +204,6 @@
 <body>
 
 <div class="wrapper">
-
-    <!-- 左侧：销售话术/产品介绍 -->
     <div class="left">
         <div class="tag">IOT · DIGITAL SALES PLATFORM</div>
 
@@ -202,69 +217,115 @@
         </div>
 
         <div class="features">
-            <div class="feature">
-                <div class="dot"></div>
-                标准化销售话术与方案推荐
-            </div>
-            <div class="feature">
-                <div class="dot"></div>
-                IoT 设备接入与协议解析支持
-            </div>
-            <div class="feature">
-                <div class="dot"></div>
-                行业场景解决方案自动生成
-            </div>
-            <div class="feature">
-                <div class="dot"></div>
-                客户问题实时智能应答
-            </div>
+            <div class="feature"><div class="dot"></div>标准化销售话术与方案推荐</div>
+            <div class="feature"><div class="dot"></div>IoT 设备接入与协议解析支持</div>
+            <div class="feature"><div class="dot"></div>行业场景解决方案自动生成</div>
+            <div class="feature"><div class="dot"></div>客户问题实时智能应答</div>
         </div>
     </div>
 
-    <!-- 右侧：登录 -->
     <div class="right">
         <div class="card">
             <h2>登录系统</h2>
-            <p>请输入账号信息以进入销售支持平台</p>
+            <p>请输入账号信息进入销售支持平台</p>
 
-            <div class="field">
-                <input id="username" type="text" placeholder="用户名"/>
+            <div class="form-item">
+                <div class="label">用户名</div>
+                <input id="username" class="input" placeholder="请输入用户名"/>
+                <div class="error" id="usernameError"></div>
             </div>
 
-            <div class="field">
-                <input id="phone" type="text" placeholder="手机号"/>
+            <div class="form-item">
+                <div class="label">手机号</div>
+                <input id="phone" class="input" placeholder="请输入中国大陆手机号"/>
+                <div class="error" id="phoneError"></div>
             </div>
 
-            <button class="btn" onclick="login()">登录</button>
-
-            <div class="hint">IoT Sales Assistant · Enterprise Edition</div>
+            <button class="btn" style="background-color: #0f766e" id="loginBtn" onclick="login()">登录</button>
         </div>
     </div>
 
 </div>
 
 <script>
+    function validateUsername(name) {
+        name = name.trim();
+        if (!name) return "请输入用户名";
+        if (name.length < 2 || name.length > 20) return "用户名长度需为2-20位";
+        if (!/^[\u4e00-\u9fa5a-zA-Z·\s]+$/.test(name)) return "仅支持中文或英文用户名";
+        return null;
+    }
+
+    function validatePhone(phone) {
+        phone = phone.trim();
+        if (!phone) return "请输入手机号";
+        if (!/^1[3-9]\d{9}$/.test(phone)) return "手机号格式不正确";
+        return null;
+    }
+
+    function setLoading(state) {
+        const btn = document.getElementById("loginBtn");
+        btn.disabled = state;
+        btn.innerHTML = state
+            ? `<span class="loading"></span>登录中...`
+            : "登录";
+    }
+
     async function login() {
-        const username = document.querySelector("#username").value;
-        const phone = document.querySelector("#phone").value;
+        const username = document.getElementById("username").value;
+        const phone = document.getElementById("phone").value;
 
-        const res = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({username, phone})
-        });
+        const uErr = document.getElementById("usernameError");
+        const pErr = document.getElementById("phoneError");
 
-        const data = await res.json();
+        uErr.innerText = "";
+        pErr.innerText = "";
 
-        if (data.token) {
+        let error = false;
+
+        const nameErr = validateUsername(username);
+        if (nameErr) {
+            uErr.innerText = nameErr;
+            error = true;
+        }
+
+        const phoneErr = validatePhone(phone);
+        if (phoneErr) {
+            pErr.innerText = phoneErr;
+            error = true;
+        }
+
+        if (error) return;
+
+        setLoading(true);
+
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    username: username.trim(),
+                    phone: phone.trim()
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                pErr.innerText = data.message || "登录失败";
+                return;
+            }
+
             localStorage.setItem("token", data.token);
             window.location.href = "home.html";
-        } else {
-            alert(data.message);
+
+        } catch (e) {
+            pErr.innerText = "网络错误，请稍后重试";
+        } finally {
+            setLoading(false);
         }
     }
 </script>
+
 </body>
 </html>
