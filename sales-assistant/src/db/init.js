@@ -27,10 +27,41 @@ async function initDB() {
 
         await pool.query(`
             CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
+            CREATE INDEX IF NOT EXISTS idx_users_login_count ON users(login_count);
         `);
 
         await pool.query(`
-            CREATE INDEX IF NOT EXISTS idx_users_login_count ON users(login_count);
+            CREATE TABLE IF NOT EXISTS knowledge
+            (
+                id         TEXT PRIMARY KEY,
+                category   TEXT NOT NULL,
+                question   TEXT NOT NULL,
+
+                roles      TEXT[] DEFAULT '{}',
+                objections TEXT[] DEFAULT '{}',
+                devices    TEXT[] DEFAULT '{}',
+                industries TEXT[] DEFAULT '{}',
+                sensitive  TEXT[] DEFAULT '{}',
+
+                core       TEXT,
+                proof      TEXT[] DEFAULT '{}',
+                follow_ups TEXT[] DEFAULT '{}',
+                share      TEXT,
+
+                source     TEXT,
+                version    TEXT        DEFAULT 'v1.0',
+
+                updated_at TIMESTAMPTZ DEFAULT NOW(),
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+        `);
+
+        await pool.query(`
+            CREATE INDEX IF NOT EXISTS idx_kb_category ON knowledge(category);
+            CREATE INDEX IF NOT EXISTS idx_kb_question_tsv ON knowledge USING GIN (to_tsvector('simple', question));
+            CREATE INDEX IF NOT EXISTS idx_kb_devices ON knowledge USING GIN (devices);
+            CREATE INDEX IF NOT EXISTS idx_kb_industries ON knowledge USING GIN (industries);
+            CREATE INDEX IF NOT EXISTS idx_kb_roles ON knowledge USING GIN (roles);
         `);
 
         console.log("✅ database initialized successfully");
