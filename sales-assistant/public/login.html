@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IoT 数字化销售平台</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+            Roboto, Helvetica, Arial, "PingFang SC", "Noto Sans SC", sans-serif;
+        }
+
+        body {
+            background: #f6f7f9;
+            color: #111;
+        }
+
+        .wrapper {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        /* 左侧 */
+        .left {
+            padding: 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(180deg, #ffffff 0%, #f4f6f8 100%);
+        }
+
+        .tag {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #6b7280;
+            margin-bottom: 18px;
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .desc {
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: 28px;
+        }
+
+        .features {
+            display: grid;
+            gap: 10px;
+            max-width: 560px;
+        }
+
+        .feature {
+            font-size: 14px;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #111;
+            flex-shrink: 0;
+        }
+
+        /* 右侧 */
+        .right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: #fff;
+            border-left: 1px solid #eee;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 360px;
+            border: 1px solid #ececec;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            background: #fff;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        .field input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 0 12px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .field input:focus {
+            border-color: #111;
+            box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+        }
+
+        .btn {
+            width: 100%;
+            height: 44px;
+            border: none;
+            border-radius: 10px;
+            background: #111;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            background: #000;
+        }
+
+        .hint {
+            margin-top: 14px;
+            font-size: 12px;
+            color: #9ca3af;
+            text-align: center;
+        }
+
+        /* ===== 移动端优化（重点重写）===== */
+        @media (max-width: 900px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                padding: 36px 22px 20px;
+                text-align: left;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .right {
+                border-left: none;
+                padding: 24px 18px 40px;
+                background: #f6f7f9;
+            }
+
+            .card {
+                max-width: 100%;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- 左侧：销售话术/产品介绍 -->
+    <div class="left">
+        <div class="tag">IOT · DIGITAL SALES PLATFORM</div>
+
+        <div class="title">
+            面向物联网设备的<br/>数字化销售与问答系统
+        </div>
+
+        <div class="desc">
+            为销售与解决方案工程师提供标准化话术与智能问答支持，
+            快速响应客户关于设备接入、数据平台、部署方案与行业应用的问题。
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="dot"></div>
+                标准化销售话术与方案推荐
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                IoT 设备接入与协议解析支持
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                行业场景解决方案自动生成
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                客户问题实时智能应答
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧：登录 -->
+    <div class="right">
+        <div class="card">
+            <h2>登录系统</h2>
+            <p>请输入账号信息以进入销售支持平台</p>
+
+            <div class="field">
+                <input id="username" type="text" placeholder="用户名"/>
+            </div>
+
+            <div class="field">
+                <input id="phone" type="text" placeholder="手机号"/>
+            </div>
+
+            <button class="btn" onclick="login()">登录</button>
+
+            <div class="hint">IoT Sales Assistant · Enterprise Edition</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    async function login() {
+        const username = document.querySelector("#username").value;
+        const phone = document.querySelector("#phone").value;
+
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({username, phone})
+        });
+
+        const data = await res.json();
+
+        if (data.token) {
+            localStorage.setItem("token", data.token);
+            window.location.href = "home.html";
+        } else {
+            alert(data.message);
+        }
+    }
+</script>
+</body>
+</html>

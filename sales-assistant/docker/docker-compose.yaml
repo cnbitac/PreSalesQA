@@ -1,0 +1,44 @@
+name: presales
+
+networks:
+  presales-base-net:
+    driver: bridge
+    name: presales-base-net
+
+volumes:
+  presales-sales-db-volume:
+
+services:
+  sales-db:
+    image: docker.io/postgres:18.0-alpine3.22
+    container_name: sales-db
+    restart: on-failure
+    ports:
+      - ${LT_AUTH_DB_PORT}:${LT_AUTH_DB_PORT}
+    environment:
+      POSTGRES_USER: ${LT_AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${LT_AUTH_DB_PASS}
+      POSTGRES_DB: ${LT_AUTH_DB_NAME}
+    networks:
+      - presales-base-net
+    volumes:
+      - presales-sales-db-volume:/var/lib/postgresql/data
+
+  sales-assistant:
+    image: crpi-n68v5vsgyo3vr4da.cn-hangzhou.personal.cr.aliyuncs.com/linkedti/sales-assistant:v1
+    container_name: sales-assistant
+    restart: on-failure
+    ports:
+      - ${LT_SALES_HTTP_PORT}:${LT_SALES_HTTP_PORT}
+    environment:
+      PORT: ${LT_SALES_HTTP_PORT}
+      DB_HOST: sales-db
+      DB_PORT: ${LT_AUTH_DB_PORT}
+      DB_USER: ${LT_AUTH_DB_USER}
+      DB_PASS: ${LT_AUTH_DB_PASS}
+      DB_NAME: ${LT_AUTH_DB_NAME}
+      JWT_SECRET: your_secret_key_2026
+    depends_on:
+      - sales-db
+    networks:
+      - presales-base-net

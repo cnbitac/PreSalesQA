@@ -1,5 +1,5 @@
-RUNTIME_NAME := sales-assistant
-IMAGE_NAME := crpi-n68v5vsgyo3vr4da.cn-hangzhou.personal.cr.aliyuncs.com/linkedti/$(RUNTIME_NAME)
+REGISTRY_URL=crpi-n68v5vsgyo3vr4da.cn-hangzhou.personal.cr.aliyuncs.com/linkedti
+IMAGE_NAME := sales-assistant
 TAG := v1
 PORT := 8080
 
@@ -11,30 +11,16 @@ LOCAL_URL := http://$(LOCAL_IP):$(PORT)
 ONLINE_URL := http://sales.linkedti.com
 
 build:
-	docker build -t $(IMAGE_NAME):$(TAG) .
+	docker build -t $(REGISTRY_URL)/$(IMAGE_NAME):$(TAG) -f sales-assistant/docker/Dockerfile sales-assistant
+
+run:
+	docker compose -f  sales-assistant/docker/docker-compose.yaml --env-file  sales-assistant/docker/.env up -d
+
+down:
+	docker compose -f  sales-assistant/docker/docker-compose.yaml --env-file  sales-assistant/docker/.env down
 
 push:
-	docker push $(IMAGE_NAME):$(TAG)
-
-run: stop
-	docker run -d -p $(PORT):80 --name $(RUNTIME_NAME) $(IMAGE_NAME):$(TAG)
-
-restart:
-	docker restart $(RUNTIME_NAME)
-
-logs:
-	docker logs -f $(RUNTIME_NAME)
-
-stop:
-	-docker stop $(RUNTIME_NAME)
-	-docker rm $(RUNTIME_NAME)
-
-clean-image:
-	-docker rmi $(IMAGE_NAME):$(TAG)
-
-clean: stop clean-image
-
-release: build push
+	docker push $(REGISTRY_URL)/$(IMAGE_NAME):$(TAG)
 
 qr-local:
 	mkdir -p output
