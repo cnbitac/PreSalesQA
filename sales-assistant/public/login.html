@@ -91,7 +91,7 @@
             padding: 32px;
             border-radius: 14px;
             background: #fff;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
         }
 
         .card h2 {
@@ -128,7 +128,7 @@
 
         .input:focus {
             border-color: #1677ff;
-            box-shadow: 0 0 0 3px rgba(22,119,255,0.15);
+            box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.15);
         }
 
         .error {
@@ -172,7 +172,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 900px) {
@@ -217,10 +219,22 @@
         </div>
 
         <div class="features">
-            <div class="feature"><div class="dot"></div>标准化销售话术与方案推荐</div>
-            <div class="feature"><div class="dot"></div>IoT 设备接入与协议解析支持</div>
-            <div class="feature"><div class="dot"></div>行业场景解决方案自动生成</div>
-            <div class="feature"><div class="dot"></div>客户问题实时智能应答</div>
+            <div class="feature">
+                <div class="dot"></div>
+                标准化销售话术与方案推荐
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                IoT 设备接入与协议解析支持
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                行业场景解决方案自动生成
+            </div>
+            <div class="feature">
+                <div class="dot"></div>
+                客户问题实时智能应答
+            </div>
         </div>
     </div>
 
@@ -272,6 +286,7 @@
     }
 
     async function login() {
+        const source = new URLSearchParams(window.location.search).get("source")
         const username = document.getElementById("username").value;
         const phone = document.getElementById("phone").value;
 
@@ -305,7 +320,8 @@
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     username: username.trim(),
-                    phone: phone.trim()
+                    phone: phone.trim(),
+                    source: source.trim()
                 })
             });
 

@@ -5,10 +5,7 @@ async function initDB() {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users
             (
-                id
-                SERIAL
-                PRIMARY
-                KEY,
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 username
                 VARCHAR
             (
@@ -23,6 +20,23 @@ async function initDB() {
                 last_login_at TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
+            CREATE TABLE IF NOT EXISTS user_whitelist
+            (
+                id
+                SERIAL
+                PRIMARY
+                KEY,
+                username
+                VARCHAR
+            (
+                50
+            ) NOT NULL UNIQUE,
+                remark VARCHAR
+            (
+                200
+            ),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
         `);
 
         await pool.query(`
@@ -33,27 +47,37 @@ async function initDB() {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS knowledge
             (
-                id         TEXT PRIMARY KEY,
-                category   TEXT NOT NULL,
-                question   TEXT NOT NULL,
+                id
+                UUID
+                PRIMARY
+                KEY
+                DEFAULT
+                gen_random_uuid
+            (
+            ),
+                category TEXT NOT NULL,
+                question TEXT NOT NULL,
 
-                roles      TEXT[] DEFAULT '{}',
+                roles TEXT[] DEFAULT '{}',
                 objections TEXT[] DEFAULT '{}',
-                devices    TEXT[] DEFAULT '{}',
+                devices TEXT[] DEFAULT '{}',
                 industries TEXT[] DEFAULT '{}',
-                sensitive  TEXT[] DEFAULT '{}',
+                sensitive TEXT[] DEFAULT '{}',
 
-                core       TEXT,
-                proof      TEXT[] DEFAULT '{}',
+                core TEXT,
+                proof TEXT[] DEFAULT '{}',
                 follow_ups TEXT[] DEFAULT '{}',
-                share      TEXT,
+                share TEXT,
+                source TEXT,
+                version TEXT DEFAULT 'v1.0',
 
-                source     TEXT,
-                version    TEXT        DEFAULT 'v1.0',
-
-                updated_at TIMESTAMPTZ DEFAULT NOW(),
-                created_at TIMESTAMPTZ DEFAULT NOW()
-            );
+                updated_at TIMESTAMPTZ DEFAULT NOW
+            (
+            ),
+                created_at TIMESTAMPTZ DEFAULT NOW
+            (
+            )
+                );
         `);
 
         await pool.query(`
