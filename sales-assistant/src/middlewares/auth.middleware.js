@@ -6,7 +6,7 @@ module.exports = function auth(req, res, next) {
     if (!token) return res.status(401).json({ message: "no token" });
 
     try {
-        req.user = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = jwt.verify(token, process.env.LT_SALES_JWT_SECRET);
         next();
     } catch {
         res.status(401).json({ message: "invalid token" });
