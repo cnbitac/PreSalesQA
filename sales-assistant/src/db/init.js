@@ -1,4 +1,6 @@
 const pool = require("./pool");
+const fs = require('fs');
+const path = require('path');
 
 async function initDB() {
     try {
@@ -89,6 +91,20 @@ async function initDB() {
         `);
 
         console.log("✅ database initialized successfully");
+
+        const sqlDir = path.resolve(process.env.LT_SALES_INIT_SQL_PATH);
+
+        const runSqlFile = async (fileName) => {
+            const filePath = path.join(sqlDir, fileName);
+            const sql = fs.readFileSync(filePath, 'utf8');
+            await pool.query(sql);
+            console.log(`✅ 已执行: ${fileName}`);
+        };
+
+        await runSqlFile('knowledge.sql');
+        await runSqlFile('whitelist.sql');
+
+        console.log("✅ table initialized successfully");
     } catch (err) {
         console.error("❌ database init failed:", err);
         process.exit(1);

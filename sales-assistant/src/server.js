@@ -3,7 +3,7 @@ require("dotenv").config();
 const app = require("./app");
 const initDB = require("./db/init");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.LT_SALES_HTTP_PORT || 3000;
 
 async function bootstrap() {
     try {
