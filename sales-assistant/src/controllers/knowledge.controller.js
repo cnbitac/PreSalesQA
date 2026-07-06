@@ -58,6 +58,8 @@ const knowledge = async (req, res) => {
             paramIndex += systems.length;
         }
 
+        sql += ` limit 20`;
+
         const result = await pool.query(sql, params);
 
         res.json({
